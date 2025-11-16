@@ -18,29 +18,49 @@
 (global-auto-revert-mode 1)
 (global-font-lock-mode 1)
 (blink-cursor-mode -1)
-(ido-mode 1)
-(ido-everywhere 1)
+(use-package orderless
+  :ensure t
+  :custom
+  ;; (orderless-style-dispatchers '(orderless-affix-dispatch))
+  ;; (orderless-component-separator #'orderless-escapable-split-on-space)
+  (completion-styles '(orderless basic))
+  (completion-category-overrides '((file (styles partial-completion))))
+  (completion-category-defaults nil)) ;; Disable defaults, use our settings
+;; (ido-mode 1)
+;; (ido-everywhere 1)
 (setq backup-directory-alist
       `(("." . ,(concat user-emacs-directory "backups"))))
 
 (setq ring-bell-function 'ignore)
+
+(use-package vertico
+  :ensure t
+  :init
+  (vertico-mode))
+(use-package savehist
+  :init
+  (savehist-mode))
 ;; (use-package modus-themes
 ;;   :ensure t
 ;;   :init
 ;;   (load-theme 'modus-vivendi t))
 
-(use-package ido-completing-read+
-  :ensure t
-  :init
-  (ido-ubiquitous-mode 1))
-(use-package amx
-  :ensure t
-  :init
-  (amx-mode 1))
-(use-package icomplete
-  :ensure t
-  :init
-  (icomplete-mode 1))
+;; (use-package ido-completing-read+
+;;   :ensure t
+;;   :init
+;;   (ido-ubiquitous-mode 1))
+;; (use-package amx
+;;   :ensure t
+;;   :init
+;;   (amx-mode 1))
+;; (use-package ido-yes-or-no
+;;   :ensure t
+;;   :init
+;;   (ido-yes-or-no-mode 1))
+;; (use-package icomplete
+;;   :ensure t
+;;   :init
+;;   (icomplete-mode 1))
 
 (when (string= system-type "darwin")
   (setq dired-use-ls-dired nil))
@@ -109,16 +129,35 @@
   ;; Hide commands in M-x which do not apply to the current mode.  Corfu
   ;; commands are hidden, since they are not used via M-x. This setting is
   ;; useful beyond Corfu.
-  (read-extended-command-predicate #'command-completion-default-include-p))
+  (read-extended-command-predicate #'command-completion-default-include-p)
+  (context-menu-mode t)
+  (enable-recursive-minibuffers t)
+  (minibuffer-prompt-properties
+   '(read-only t cursor-intangible t face minibuffer-prompt))
+  (use-short-answers t)
+  (ispell-dictionary "en_US")
+  )
 
-(use-package orderless
+;; (use-package which-key
+;;   :ensure t     ;; This is built-in, no need to fetch it.
+;;   :defer t        ;; Defer loading Which-Key until after init.
+;;   :hook
+;;   (after-init . which-key-mode)) ;; Enable which-key mode after initialization.
+
+(use-package marginalia
   :ensure t
-  :custom
-  ;; (orderless-style-dispatchers '(orderless-affix-dispatch))
-  ;; (orderless-component-separator #'orderless-escapable-split-on-space)
-  (completion-styles '(orderless basic))
-  (completion-category-overrides '((file (styles partial-completion))))
-  (completion-category-defaults nil)) ;; Disable defaults, use our settings
+  :hook
+  (after-init . marginalia-mode))
+
+(use-package consult
+  :ensure t
+  :defer t
+  :init
+  (advice-add #'register-preview :override #'consult-register-window)
+
+  ;; Use Consult for xref locations with a preview feature.
+  (setq xref-show-xrefs-function #'consult-xref
+        xref-show-definitions-function #'consult-xref))
 
 (use-package magit
   :ensure t)
@@ -130,3 +169,13 @@
 ;;   :ensure t
 ;;   :init
 ;;   (evil-mode 1))
+
+(require 'view)
+(keymap-global-set "C-v" (lambda () (interactive) (View-scroll-half-page-forward) (recenter)))
+(keymap-global-set "M-v" (lambda () (interactive) (View-scroll-half-page-backward) (recenter)))
+
+;; (use-package projectile
+;;   :ensure t
+;;   :init
+;;   (projectile-mode +1)
+;;   (keymap-global-set "C-c p" 'projectile-command-map))
