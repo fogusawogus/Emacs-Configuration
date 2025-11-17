@@ -10,6 +10,7 @@
 (tool-bar-mode -1)
 (menu-bar-mode -1)
 (column-number-mode 1)
+(scroll-bar-mode -1)
 (add-to-list 'default-frame-alist '(fullscreen . maximized))
 ;; (global-display-line-numbers-mode 1)
 (set-frame-font "personal iosevka 16" t)
@@ -67,10 +68,10 @@
 
 (electric-pair-mode)
 
-(use-package nano-theme
-  :ensure t
-  :init
-  (load-theme 'nano-dark t))
+;; (use-package nano-theme
+;;   :ensure t
+;;   :init
+;;   (load-theme 'nano-dark t))
 
 (use-package doom-themes
   :ensure t
@@ -179,3 +180,22 @@
 ;;   :init
 ;;   (projectile-mode +1)
 ;;   (keymap-global-set "C-c p" 'projectile-command-map))
+
+(use-package flx
+  :ensure t)
+
+(use-package company-fuzzy
+  :ensure t
+  :hook (company-mode . company-fuzzy-mode)
+  :init
+  (global-company-fuzzy-mode 1)
+  (setq company-fuzzy-sorting-backend 'flx
+        company-fuzzy-reset-selection t
+        company-fuzzy-prefix-on-top nil
+        company-fuzzy-trigger-symbols '("." "->" "<" "\"" "'" "@")))
+
+;; (use-package fussy
+;;   :ensure t
+;;   :config
+;;   (fussy-setup))
+
