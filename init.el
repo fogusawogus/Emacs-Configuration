@@ -19,6 +19,7 @@
 (global-auto-revert-mode 1)
 (global-font-lock-mode 1)
 (blink-cursor-mode -1)
+(keymap-global-set "C-c c" 'org-capture)
 (use-package orderless
   :ensure t
   :custom
