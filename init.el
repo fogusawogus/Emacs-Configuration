@@ -227,7 +227,9 @@
 (use-package god-mode
   :ensure t
   :init
-  (god-mode)
+  (setq god-exempt-major-modes nil)
+  (setq god-exempt-predicates nil)
+  (god-mode-all)
   (define-key god-local-mode-map (kbd "i") #'god-local-mode)
   (global-set-key (kbd "<escape>") #'(lambda () (interactive) (god-local-mode 1)))
   (define-key god-local-mode-map (kbd ".") #'repeat))
@@ -238,3 +240,7 @@
 
 (use-package org-roam
   :ensure t)
+(use-package yasnippet
+  :ensure t
+  :init
+  (yas-global-mode 1))
