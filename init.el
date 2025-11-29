@@ -32,10 +32,11 @@
   (completion-category-defaults nil)) ;; Disable defaults, use our settings
 ;; (ido-mode 1)
 ;; (ido-everywhere 1)
+(defvar autosavedir (expand-file-name "~/.emacs.d/autosaves/"))
 (setq backup-directory-alist
       `(("." . ,(concat user-emacs-directory "backups"))))
-(make-directory '(("." . ,(concat user-emacs-directory "autosave"))) t)
-(setq auto-save-file-name-transforms '((".*" . ,(concat user-emacs-directory "autosave") t)))
+(make-directory autosavedir t)
+(setq auto-save-file-name-transforms `((".*" ,autosavedir t)))
 (setq backup-by-copying t)
 (setq create-lockfiles nil)
 (setq ring-bell-function 'ignore)
