@@ -16,7 +16,6 @@
 (set-frame-font "personal iosevka 16" t)
 (setq split-width-threshold 9999)
 (setq split-height-threshold 0)
-(cd "C:/Users/Jacob/")
 (recentf-mode 1)
 (setq-default tab-width 4)
 (global-auto-revert-mode 1)
@@ -35,7 +34,10 @@
 ;; (ido-everywhere 1)
 (setq backup-directory-alist
       `(("." . ,(concat user-emacs-directory "backups"))))
-
+(make-directory '(("." . ,(concat user-emacs-directory "autosave"))) t)
+(setq auto-save-file-name-transforms '((".*" . ,(concat user-emacs-directory "autosave") t)))
+(setq backup-by-copying t)
+(setq create-lockfiles nil)
 (setq ring-bell-function 'ignore)
 
 (use-package vertico
@@ -70,7 +72,10 @@
 (when (string= system-type "darwin")
   (setq dired-use-ls-dired nil))
 
-(electric-pair-mode)
+(when (string= system-type "windows-nt")
+  (cd "C:/Users/Jacob/"))
+
+;; (electric-pair-mode)
 
 ;; (use-package nano-theme
 ;;   :ensure t
@@ -87,40 +92,41 @@
   ;; (load-theme 'doom-badger t)
 )
 
-;; (use-package corfu
-;;   :ensure t
-;;   :init
-;;   (global-corfu-mode)
-;;   (corfu-history-mode))
-
-;; (use-package cape
-;;   :ensure t
-;;   ;; Bind prefix keymap providing all Cape commands under a mnemonic key.
-;;   ;; Press C-c p ? to for help.
-;;   :bind ("C-c p" . cape-prefix-map) ;; Alternative key: M-<tab>, M-p, M-+
-;;   ;; Alternatively bind Cape commands individually.
-;;   ;; :bind (("C-c p d" . cape-dabbrev)
-;;   ;;        ("C-c p h" . cape-history)
-;;   ;;        ("C-c p f" . cape-file)
-;;   ;;        ...)
-;;   :init
-;;   ;; Add to the global default value of `completion-at-point-functions' which is
-;;   ;; used by `completion-at-point'.  The order of the functions matters, the
-;;   ;; first function returning a result wins.  Note that the list of buffer-local
-;;   ;; completion functions takes precedence over the global list.
-;;   (add-hook 'completion-at-point-functions #'cape-dabbrev)
-;;   (add-hook 'completion-at-point-functions #'cape-file)
-;;   (add-hook 'completion-at-point-functions #'cape-elisp-block)
-;;   (add-hook 'completion-at-point-functions #'cape-history)
-;;   ;; ...
-;; )
-
-(use-package company
+(use-package corfu
   :ensure t
   :init
-  (add-hook 'after-init-hook 'global-company-mode)
-  (setq company-idle-delay nil)
-  (keymap-global-set "C-x C-o" 'company-complete))
+  (global-corfu-mode)
+  (corfu-history-mode))
+  ;; :bind ("C-x C-o" . ))
+
+(use-package cape
+  :ensure t
+  ;; Bind prefix keymap providing all Cape commands under a mnemonic key.
+  ;; Press C-c p ? to for help.
+  :bind ("C-c p" . cape-prefix-map) ;; Alternative key: M-<tab>, M-p, M-+
+  ;; Alternatively bind Cape commands individually.
+  ;; :bind (("C-c p d" . cape-dabbrev)
+  ;;        ("C-c p h" . cape-history)
+  ;;        ("C-c p f" . cape-file)
+  ;;        ...)
+  :init
+  ;; Add to the global default value of `completion-at-point-functions' which is
+  ;; used by `completion-at-point'.  The order of the functions matters, the
+  ;; first function returning a result wins.  Note that the list of buffer-local
+  ;; completion functions takes precedence over the global list.
+  (add-hook 'completion-at-point-functions #'cape-dabbrev)
+  (add-hook 'completion-at-point-functions #'cape-file)
+  (add-hook 'completion-at-point-functions #'cape-elisp-block)
+  (add-hook 'completion-at-point-functions #'cape-history)
+  ;; ...
+)
+
+;; (use-package company
+;;   :ensure t
+;;   :init
+;;   (add-hook 'after-init-hook 'global-company-mode)
+;;   (setq company-idle-delay nil)
+;;   (keymap-global-set "C-x C-o" 'company-complete))
 
 (use-package emacs
   :custom
@@ -129,7 +135,7 @@
 
   ;; Enable indentation+completion using the TAB key.
   ;; `completion-at-point' is often bound to M-TAB.
-  ;; (tab-always-indent 'complete)
+  (tab-always-indent 'complete)
 
   ;; Hide commands in M-x which do not apply to the current mode.  Corfu
   ;; commands are hidden, since they are not used via M-x. This setting is
@@ -188,18 +194,46 @@
 (use-package flx
   :ensure t)
 
-(use-package company-fuzzy
-  :ensure t
-  :hook (company-mode . company-fuzzy-mode)
-  :init
-  (global-company-fuzzy-mode 1)
-  (setq company-fuzzy-sorting-backend 'flx
-        company-fuzzy-reset-selection t
-        company-fuzzy-prefix-on-top nil
-        company-fuzzy-trigger-symbols '("." "->" "<" "\"" "'" "@")))
+;; (use-package company-fuzzy
+;;   :ensure t
+;;   :hook (company-mode . company-fuzzy-mode)
+;;   :init
+;;   (global-company-fuzzy-mode 1)
+;;   (setq company-fuzzy-sorting-backend 'flx
+;;         company-fuzzy-reset-selection t
+;;         company-fuzzy-prefix-on-top nil
+;;         company-fuzzy-trigger-symbols '("." "->" "<" "\"" "'" "@")))
 
 ;; (use-package fussy
 ;;   :ensure t
 ;;   :config
 ;;   (fussy-setup))
 
+(use-package smartparens
+  :ensure t
+  :init
+  (smartparens-global-mode 1))
+
+(use-package prescient
+  :ensure t
+  :init)
+
+(use-package corfu-prescient
+  :ensure t
+  :init
+  (corfu-prescient-mode 1))
+
+(use-package god-mode
+  :ensure t
+  :init
+  (god-mode)
+  (define-key god-local-mode-map (kbd "i") #'god-local-mode)
+  (global-set-key (kbd "<escape>") #'(lambda () (interactive) (god-local-mode 1)))
+  (define-key god-local-mode-map (kbd ".") #'repeat))
+
+
+(use-package flycheck
+  :ensure t)
+
+(use-package org-roam
+  :ensure t)

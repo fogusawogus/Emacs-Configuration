@@ -81,14 +81,7 @@
  '(org-capture-templates
    '(("t" "Todo item" entry (file "~/org/todo.org") "* TODO %?"
 	  :empty-lines 1 :time-prompt t)))
- '(package-selected-packages
-   '(kanagawa-themes aqi pdf-tools typst-preview rust-mode fussy flx
-					 company-fuzzy which-key consult marginalia
-					 projectile vertico ido-yes-or-no tao-theme
-					 gruber-darker-theme evil undo-tree cape company
-					 modus-themes modus magit orderless corfu smex
-					 ido-completing-read+ go-mode doom-themes
-					 nano-theme))
+ '(package-selected-packages nil)
  '(scroll-conservatively 101)
  '(scroll-margin 8)
  '(whitespace-style
