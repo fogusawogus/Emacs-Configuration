@@ -32,11 +32,11 @@
   (completion-category-defaults nil)) ;; Disable defaults, use our settings
 ;; (ido-mode 1)
 ;; (ido-everywhere 1)
-(defvar autosavedir (expand-file-name "~/.emacs.d/autosaves/"))
+;; (defvar autosavedir (expand-file-name "~/.emacs.d/autosaves/"))
 (setq backup-directory-alist
       `(("." . ,(concat user-emacs-directory "backups"))))
-(make-directory autosavedir t)
-(setq auto-save-file-name-transforms `((".*" ,autosavedir t)))
+;; (make-directory autosavedir t)
+;; (setq auto-save-file-name-transforms `((".*" ,autosavedir t)))
 (setq backup-by-copying t)
 (setq create-lockfiles nil)
 (setq ring-bell-function 'ignore)
@@ -246,3 +246,7 @@
   (yas-global-mode 1))
 (use-package yasnippet-snippets
   :ensure t)
+(use-package real-auto-save
+  :ensure t
+  :init
+  (add-hook 'prog-mode-hook 'real-auto-save-mode))

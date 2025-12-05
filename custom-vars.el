@@ -5,6 +5,7 @@
  ;; If there is more than one, they won't work right.
  '(auto-save-default nil)
  '(company-abort-on-unique-match t)
+ '(create-lockfiles nil)
  '(custom-enabled-themes '(nano-dark))
  '(custom-safe-themes
    '("d2ab3d4f005a9ad4fb789a8f65606c72f30ce9d281a9e42da55f7f4b9ef5bfc6"
@@ -80,7 +81,9 @@
  '(org-agenda-files '("/Users/jacobwong/org/todo.org"))
  '(org-capture-templates
    '(("t" "Todo item" entry (file "~/org/todo.org") "* TODO %?"
-	  :empty-lines 1 :time-prompt t)))
+	  :empty-lines 1 :time-prompt t)
+	 ("p" "Project Planning" entry (file "~/org/project.org") "* %?"
+	  :empty-lines-after 1 :time-prompt t)))
  '(package-selected-packages nil)
  '(scroll-conservatively 101)
  '(scroll-margin 8)
