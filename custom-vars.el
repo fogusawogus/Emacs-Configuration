@@ -6,6 +6,7 @@
  '(auto-save-default nil)
  '(c-default-style '((java-mode . "java") (awk-mode . "awk") (other . "user")))
  '(company-abort-on-unique-match t)
+ '(create-lockfiles nil)
  '(custom-enabled-themes '(nano-dark))
  '(custom-safe-themes
    '("9819b94dc38ee935362d4bf1c1198ebb8ebeabb5e8c85a78436565720d91c0d7"
